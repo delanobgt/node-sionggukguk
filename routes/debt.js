@@ -7,31 +7,26 @@ let debtModel = require("../models/debt");
 
 // INDEX route
 router.get("/debts", function(req, res) {
-	let newDocument = {
-		startDate: "2000-11-12",
-		capital: 100000,
-		rate: 6,
-		extrass: [ 
-			{
-				description: "Apartemen",
-				cost: 5000
-			},
-			{
-				description: "Rumah",
-				cost: 10000
-			}
-		]
-	}
-	console.log(newDocument);
-	debtModel.create(newDocument, function(err, data) {
-		if (err) {
-			console.log(err);
-		} else {
-			console.log(data);
-		}
-	})
+	debtModel.find(
+		{}
+	).limit(100).then(function(debts) {
+		res.render("debts/index", {debts: debts});
+	});
+});
 
-	res.render("debts/index");
+// NEW route
+router.get("/debts/new", function(req, res) {
+	res.render("debts/new");
+});
+
+// CREATE route
+router.post("/debts", function(req, res) {
+	console.log(req.body);
+});
+
+// SHOW route
+router.get("/debts/:id", function(req, res) {
+
 });
 
 module.exports = router;

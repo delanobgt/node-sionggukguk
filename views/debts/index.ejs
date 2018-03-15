@@ -7,6 +7,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/debts/index.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 		<title>SiongGukGuk's Debts</title>
 	</head>
 
@@ -14,7 +15,10 @@
     <!-- NAVBAR-START -->
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-  		  <a class="navbar-brand" href="#">Navbar</a>
+  		  <a class="navbar-brand" href="#">
+          <i style="font-size: 1.5em;" class="fab fa-bitcoin"></i>
+          SiongGukGuk
+        </a>
   		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
   		    <span class="navbar-toggler-icon"></span>
   		  </button>
@@ -24,11 +28,12 @@
   		      <li class="nav-item active">
   		        <a class="nav-link" href="#"><strong>Home</strong><span class="sr-only">(current)</span></a>
   		      </li>
-
+            <li class="nav-item">
+              <a class="nav-link" href="/debts/new">Create New Debt</a>
+            </li>
   		      <li class="nav-item">
   		        <a class="nav-link" href="#">About</a>
   		      </li>
-
   		      <li class="nav-item dropdown">
   		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
   		          Profile
@@ -47,27 +52,27 @@
 		</nav>
     <!-- NAVBAR-END -->
 
+    <!-- CARDS START -->
     <div id="card_wrapper" class="container">
       <div class="row">
 
-        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+        <!-- generate a Card for each Debt -->
+        <% for (let debt of debts) { %>
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"> <%= debt.title %> </h5>
+                <h6 class="card-subtitle mb-2 text-muted"> <%= debt.startDate %> </h6>
+                <p class="card-text"> Capital: <%= debt.capital %> </p>
+                <p class="card-text"> Rate: <%= debt.rate %> % </p>
+                <a href="#" class="btn btn-primary"> See Details </a>
+              </div>
             </div>
           </div>
-        </div>
-        
+        <% } %>
+
       </div>
     </div>
+    <!-- CARDS END -->
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-	</body>
-</html>
+<% include ../partials/debtsFooter %>

@@ -20,10 +20,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 
 app.get("/", function(req, res) {
-    res.send("halo");
-});
-
-app.get("/login", function(req, res) {
+    res.redirect("/debts");
 });
 
 // ROUTER middlewares
