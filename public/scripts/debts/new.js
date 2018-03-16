@@ -9,11 +9,11 @@ function initAddButton() {
 				`
 					<div id="description${extrasCount}" class="extras_column form-group">
 	                  <label class="extras_label">Description</label>
-	                  <input type="text" class="extras_text" name="descriptions[${extrasCount}]" placeholder="Description">  
+	                  <input type="text" class="extras_text" name="descriptions[${extrasCount}]" placeholder="Description" required>
 	                </div>
 	                <div id="cost${extrasCount}" class="extras_column form-group">
 	                  <label class="extras_label">Cost</label>
-	                  <input type="number" class="extras_number" name="costs[${extrasCount}]" placeholder="Cost (ex. 100,000)">  
+	                  <input type="number" class="extras_number" name="costs[${extrasCount}]" placeholder="Cost (ex. 100,000)" required>  
 	                </div>
 	                <button type="button" id="delete${extrasCount}" onclick="deleteExtraNodesAt(${extrasCount});" class="btn btn-danger">X</button>
 	            `;

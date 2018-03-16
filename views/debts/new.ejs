@@ -21,20 +21,20 @@
           <form action="/debts" method="POST">
             <div class="form-group">
               <label for="title">Title (Judul)</label>
-              <input type="text" class="form-control" id="title" name="title" placeholder="Enter title">
+              <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" required>
               <small class="form-text text-muted">Please use a descriptive naming</small>
             </div>
             <div class="form-group">
               <label for="start_date">Start Date (Tanggal Mulai)</label>
-              <input type="date" class="form-control" id="start_date" name="start_date" placeholder="yyyy/mm/dd">
+              <input type="date" class="form-control" id="start_date" name="start_date" placeholder="yyyy/mm/dd" required>
             </div>
             <div class="form-group">
               <label for="capital">Capital (Modal)</label>
-              <input type="number" value="" class="form-control" id="capital" name="capital" placeholder="Capital (ex. 100,000)">
+              <input type="number" value="" class="form-control" id="capital" name="capital" placeholder="Capital (ex. 100,000)" required>
             </div>
             <div class="form-group">
               <label for="rate">Rate (Bunga)</label>
-              <input type="number" value="" min="1" max="100" class="form-control" id="rate" name="rate" placeholder="Rate (1-100)%"> %
+              <input type="number" value="" min="1" max="100" class="form-control" id="rate" name="rate" placeholder="Rate (1-100)%" required> %
             </div>
             <div class="form-group">
               <label>Extra Cost</label>
@@ -43,7 +43,7 @@
               </div>
               <button type="button" id="add_button" class="btn btn-outline-primary">Add</button>
             </div>
-            <button class="btn btn-primary btn-block">Create</button>
+            <button class="btn btn-primary btn-block"><strong>Create</strong></button>
           </form>
         </div>
         <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>

@@ -31,20 +31,20 @@
             <li class="nav-item">
               <a class="nav-link" href="/debts/new">Create New Debt</a>
             </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Profile
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <!-- <h1>hehehe</h1>
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a> -->
+              </div>
+            </li>
   		      <li class="nav-item">
   		        <a class="nav-link" href="#">About</a>
-  		      </li>
-  		      <li class="nav-item dropdown">
-  		        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  		          Profile
-  		        </a>
-  		        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <!-- <h1>hehehe</h1>
-  		          <a class="dropdown-item" href="#">Action</a>
-  		          <a class="dropdown-item" href="#">Another action</a>
-  		          <div class="dropdown-divider"></div>
-  		          <a class="dropdown-item" href="#">Something else here</a> -->
-  		        </div>
   		      </li>
   		    </ul>
         </div>
@@ -65,7 +65,7 @@
                 <h6 class="card-subtitle mb-2 text-muted"> <%= debt.startDate %> </h6>
                 <p class="card-text"> Capital: <%= debt.capital %> </p>
                 <p class="card-text"> Rate: <%= debt.rate %> % </p>
-                <a href="#" class="btn btn-primary"> See Details </a>
+                <a href="/debts/<%= debt._id %>" class="btn btn-primary"> See Details </a>
               </div>
             </div>
           </div>

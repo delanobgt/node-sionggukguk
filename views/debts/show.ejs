@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<title>SiongGukGuk's Debts</title>
+	</head>
+
+	<body>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+          <p>Title</p>
+          <h1> <%= debt.title %> </h1>
+          <p class=""> <%= debt.startDate %> </p>
+          <p class=""> <%= debt.capital %> </p>
+          <p class=""> <%= debt.rate %> </p>
+        </div>
+        <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
+      </div>
+    </div>
+
+<% include ../partials/debtsFooter %>
