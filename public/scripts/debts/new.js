@@ -21,7 +21,7 @@ function initAddButton() {
 		if (extrasCount == 0) {
 			extrasWrapper.innerHTML = newExtraHTML;
 		} else {
-			let prevNode = document.getElementById(`delete${extrasCount-1}`);
+			let prevNode = extrasWrapper.children[extrasWrapper.children.length-1];
 			prevNode.insertAdjacentHTML('afterend', newExtraHTML);
 		}
         extrasCount++;

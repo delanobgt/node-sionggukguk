@@ -1,0 +1,16 @@
+buttonW {
+	margin: 0;
+}
+
+#control_buttons {
+	margin: 1em 0;
+}
+
+#control_buttons button {
+	margin: 0.5em 0;
+}
+
+#control_buttons a:nth-child(1), #control_buttons a:nth-child(2) {
+	width: 30%;
+	margin-bottom: 0.25em;
+}

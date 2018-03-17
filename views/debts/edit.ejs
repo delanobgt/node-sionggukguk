@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/debts/new.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/debts/edit.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+		<title>SiongGukGuk's Debts</title>
+	</head>
+
+	<body>
+    
+    <div class="container">
+      <h1>Edit Debt</h1>
+      <div class="row">
+        <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+          <form action="/debts/<%= debt._id %>?_method=PUT" method="POST">
+            <div class="form-group">
+              <label for="title">Title (Judul)</label>
+              <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" value="<%= debt.title %>" required>
+              <small class="form-text text-muted">Please use a descriptive naming</small>
+            </div>
+            <div class="form-group">
+              <label for="start_date">Start Date (Tanggal Mulai)</label>
+              <input type="date" class="form-control" id="start_date" name="startDate" placeholder="yyyy/mm/dd" value="<%= debt.startDate %>" required>
+            </div>
+            <div class="form-group">
+              <label for="capital">Capital (Modal)</label>
+              <input type="number" class="form-control" id="capital" name="capital" placeholder="Capital (ex. 100,000)" value="<%= debt.capital %>" required>
+            </div>
+            <div class="form-group">
+              <label for="rate">Rate (Bunga)</label>
+              <input type="number" min="1" max="100" class="form-control" id="rate" name="rate" placeholder="Rate (1-100)%" value="<%= debt.rate %>" required> %
+            </div>
+            <div class="form-group">
+              <label>Extra Cost</label>
+              <div id="extras_wrapper">
+                <% let cnt = 0; %>
+                <% for (let extra of debt.extras) { %>
+                  <div id="description<%= cnt %>" class="extras_column form-group">
+                    <label class="extras_label">Description</label>
+                    <input type="text" class="extras_text" name="descriptions[<%= cnt %>]" placeholder="Description" value="<%= extra.description %>" required>
+                  </div>
+                  <div id="cost<%= cnt %>" class="extras_column form-group">
+                    <label class="extras_label">Cost</label>
+                    <input type="number" class="extras_number" name="costs[<%= cnt %>]" placeholder="Cost (ex. 100,000)" value="<%= extra.description %>" required>  
+                  </div>
+                  <button type="button" id="delete<%= cnt %>" onclick="deleteExtraNodesAt(<%= cnt %>);" class="btn btn-danger">X</button>
+                  <% cnt++ %>
+                <% } %>
+              </div>
+              <button type="button" id="add_button" class="btn btn-outline-primary">Add</button>
+            </div>
+            <div id="control_buttons">
+              <a href="/debts/<%= debt._id %>/edit" class="btn btn-secondary btn-block"><strong>Reset</strong></a>
+              <a href="/debts/<%= debt._id %>" class="btn btn-danger btn-block"><strong>Cancel</strong></a>
+              <button class="btn btn-primary btn-block"><strong>Update</strong></button>  
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="/scripts/debts/new.js"></script>
+    <script type="text/javascript">
+      extrasCount = document.getElementById("extras_wrapper").childElementCount/3;
+    </script>
+<% include ../partials/debtsFooter %>

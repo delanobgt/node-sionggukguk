@@ -9,7 +9,7 @@ let debtModel = require("../models/debt");
 router.get("/debts", function(req, res) {
     debtModel.find(
         {}
-    ).limit(100).then(function(debts) {
+    ).then(debts => {
         res.render("debts/index", {debts: debts});
     });
 });
@@ -23,14 +23,14 @@ router.get("/debts/new", function(req, res) {
 router.post("/debts", function(req, res) {
     debtModel.create({
         title: req.body.title,
-        startDate: Date(req.body.startDate),
+        startDate: new Date(req.body.startDate),
         capital: req.body.capital,
         rate: req.body.rate
-    }).then(function(debt) {
+    }).then(debt => {
         if (req.body.descriptions && req.body.costs) {
             let descriptions = req.body.descriptions;
             let costs = req.body.costs;
-            for (let i = 0; i < descriptions.length; i++) {
+            for (let i in descriptions) {
                 debt.extras.push({
                     description: descriptions[i],
                     cost: costs[i]
@@ -38,10 +38,8 @@ router.post("/debts", function(req, res) {
             }
         }
         return debt.save();
-    }).then(function(debt) {
-        return debtModel.find({});
-    }).then(function(debts) {
-        res.render("debts/index", {debts: debts});
+    }).then(debt => {
+        res.redirect("/debts");
     });
 });
 
@@ -51,6 +49,57 @@ router.get("/debts/:id", function(req, res) {
         req.params.id
     ).then(debt => {
         res.render("debts/show", {debt: debt});
+    });
+});
+
+// EDIT route
+router.get("/debts/:id/edit", function(req, res) {
+    debtModel.findById(
+        req.params.id
+    ).then(debt => {
+        res.render("debts/edit", {debt: debt});
+    });
+});
+
+// UPDATE route
+router.put("/debts/:id", function(req, res) {
+    debtModel.findByIdAndUpdate(
+        req.params.id,
+        { $set: {
+                title: req.body.title,
+                startDate: new Date(req.body.startDate),
+                capital: req.body.capital,
+                rate: req.body.rate
+            }
+        },
+        {
+            new: true
+        }
+    ).then(debt => {
+        while (debt.extras.length) 
+            debt.extras.pop();
+        if (req.body.descriptions && req.body.costs) {
+            let descriptions = req.body.descriptions;
+            let costs = req.body.costs;
+            for (let i in descriptions) {
+                debt.extras.push({
+                    description: descriptions[i],
+                    cost: costs[i]
+                });
+            }
+        }
+        return debt.save();
+    }).then(debt => {
+        res.redirect(`/debts/${debt._id}`);
+    })
+});
+
+// DELETE route
+router.delete("/debts/:id", function(req, res) {
+    debtModel.findByIdAndRemove(
+        req.params.id
+    ).then(() => {
+        res.redirect("/debts");
     });
 });
 

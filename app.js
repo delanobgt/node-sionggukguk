@@ -26,6 +26,11 @@ app.get("/", function(req, res) {
 // ROUTER middlewares
 app.use(debtsRouter);
 
+// DEFAULT route
+app.get("*", function(req, res) {
+	res.send("default");
+});
+
 // start the server
 const PORT = 1234;
 app.listen(PORT, function() {

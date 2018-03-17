@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/debts/show.css">
 		<title>SiongGukGuk's Debts</title>
 	</head>
 
@@ -14,11 +15,46 @@
       <div class="row">
         <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
         <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
-          <p>Title</p>
-          <h1> <%= debt.title %> </h1>
-          <p class=""> <%= debt.startDate %> </p>
-          <p class=""> <%= debt.capital %> </p>
-          <p class=""> <%= debt.rate %> </p>
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title"><%= debt.title %></h2>
+              <h6 class="card-subtitle mb-2 text-muted"><%= debt.startDate %></h6>
+              <table>
+                <tr>
+                  <td><p class="card-text">Capital</p></td>
+                  <td><p class="card-text colon">:</p></td>
+                  <td><p class="card-text value"><%= debt.capital %></p></td>
+                </tr>
+                <tr>
+                  <td><p class="card-text">Rate</p></td>
+                  <td><p class="card-text colon">:</p></td>
+                  <td><p class="card-text value"><%= debt.rate %></p></td>
+                </tr>
+              </table>
+              <% if (debt.extras) { %>
+                <hr>
+                <h4>EXTRA COST</h4>
+                <table id="extraTable">
+                  <tr>
+                    <th>Description</th>
+                    <th>Cost</th>
+                  </tr>
+                  <% for (let extra of debt.extras) { %>
+                    <tr>
+                      <td><p class="extra-table-text"><%= extra.description %></p></td>
+                      <td><p class="extra-table-text"><%= extra.cost %></p></td>
+                    </tr>
+                  <% } %>
+                </table>
+              <% } %>
+              <div class="text-right">
+                <a href="/debts/<%= debt._id %>/edit" class="btn btn-primary" style="width: 5em;">Edit</a>
+                <form action="/debts/<%= debt._id %>?_method=DELETE" method="POST">
+                  <button class="btn btn-danger" style="width: 5em;">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
       </div>
