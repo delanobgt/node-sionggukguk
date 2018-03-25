@@ -1,0 +1,14 @@
+<% if (success.length || error.length) { %>
+  <br>
+  <div class="container">
+    <% if (success.length) { %>
+      <div class="alert alert-success text-center" role="alert">
+          <%= success %>
+      </div>
+    <% } else if (error.length) { %>
+      <div class="alert alert-danger text-center" role="alert">
+        <%= error %>
+      </div>
+    <% } %>
+  </div>
+<% } %>

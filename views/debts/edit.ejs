@@ -13,7 +13,7 @@
 	</head>
 
 	<body>
-    
+    <% include ../partials/flashAlert %>
     <div class="container">
       <h1>Edit Debt</h1>
       <div class="row">
@@ -27,11 +27,11 @@
             </div>
             <div class="form-group">
               <label for="start_date">Start Date (Tanggal Mulai)</label>
-              <input type="date" class="form-control" id="start_date" name="startDate" placeholder="yyyy/mm/dd" value="<%= debt.startDate %>" required>
+              <input type="date" class="form-control" id="start_date" name="startDate" placeholder="yyyy/mm/dd" value="<%= moment(debt.startDate).format('YYYY-MM-DD') %>" required>
             </div>
             <div class="form-group">
               <label for="capital">Capital (Modal)</label>
-              <input type="number" class="form-control" id="capital" name="capital" placeholder="Capital (ex. 100,000)" value="<%= debt.capital %>" required>
+              <input type="text" class="form-control" id="capital" name="capital" placeholder="Capital (ex. 100,000)" value="<%= debt.capital %>" required>
             </div>
             <div class="form-group">
               <label for="rate">Rate (Bunga)</label>
@@ -67,8 +67,9 @@
       </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
     <script type="text/javascript" src="/scripts/debts/new.js"></script>
     <script type="text/javascript">
-      extrasCount = document.getElementById("extras_wrapper").childElementCount/3;
+      extrasCount = <%= cnt %>;
     </script>
 <% include ../partials/debtsFooter %>

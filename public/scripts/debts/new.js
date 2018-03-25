@@ -8,15 +8,15 @@ function initAddButton() {
 		let newExtraHTML = 
 				`
 					<div id="description${extrasCount}" class="extras_column form-group">
-	                  <label class="extras_label">Description</label>
-	                  <input type="text" class="extras_text" name="descriptions[${extrasCount}]" placeholder="Description" required>
-	                </div>
-	                <div id="cost${extrasCount}" class="extras_column form-group">
-	                  <label class="extras_label">Cost</label>
-	                  <input type="number" class="extras_number" name="costs[${extrasCount}]" placeholder="Cost (ex. 100,000)" required>  
-	                </div>
-	                <button type="button" id="delete${extrasCount}" onclick="deleteExtraNodesAt(${extrasCount});" class="btn btn-danger">X</button>
-	            `;
+							<label class="extras_label">Description</label>
+							<input type="text" class="extras_text" name="descriptions[${extrasCount}]" placeholder="Description" required>
+						</div>
+						<div id="cost${extrasCount}" class="extras_column form-group">
+							<label class="extras_label">Cost</label>
+							<input type="number" class="extras_number" name="costs[${extrasCount}]" placeholder="Cost (ex. 100,000)" required>  
+						</div>
+						<button type="button" id="delete${extrasCount}" onclick="deleteExtraNodesAt(${extrasCount});" class="btn btn-danger">X</button>
+				`;
 		let extrasWrapper = document.getElementById("extras_wrapper");
 		if (extrasCount == 0) {
 			extrasWrapper.innerHTML = newExtraHTML;
@@ -37,3 +37,19 @@ function deleteExtraNodesAt(idx) {
     var deleteButton = document.getElementById(`delete${idx}`);
     deleteButton.parentNode.removeChild(deleteButton);
 }
+
+// comma decoration for Number Input
+function giveComma(numberStr) {
+	let noComma = numberStr.replace(/[,\.]/g, "");
+	let withComma = Number(noComma).toLocaleString('en', {
+		maximumSignificantDigits : 21,
+		maximumFractionDigits: 20
+	});
+	return withComma;
+}
+
+$('#capital').on('input',function(e){
+	let unformattedStr = $(this).val();
+	let formattedStr = giveComma(unformattedStr);
+	$(this).val(formattedStr);
+});

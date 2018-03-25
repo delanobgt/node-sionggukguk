@@ -15,7 +15,7 @@
     <!-- NAVBAR-START -->
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-  		  <a class="navbar-brand" href="#">
+  		  <a class="navbar-brand" href="/">
           <i style="font-size: 1.5em;" class="fab fa-bitcoin"></i>
           SiongGukGuk
         </a>
@@ -25,33 +25,21 @@
 
   		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
   		    <ul class="navbar-nav ml-auto">
-  		      <li class="nav-item active">
-  		        <a class="nav-link" href="#"><strong>Home</strong><span class="sr-only">(current)</span></a>
-  		      </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/debts/new">Create New Debt</a>
+            <li class="nav-item active">
+              <a class="btn btn-primary" href="/debts/new">Create New Debt</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Profile
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <!-- <h1>hehehe</h1>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a> -->
-              </div>
+            <li>
+              &nbsp;&nbsp;&nbsp;
             </li>
-  		      <li class="nav-item">
-  		        <a class="nav-link" href="#">About</a>
-  		      </li>
+            <li class="nav-item active">
+              <a class="btn btn-outline-primary" href="/logout">Logout</a>
+            </li>
   		    </ul>
         </div>
 		  </div>
 		</nav>
     <!-- NAVBAR-END -->
-
+    <% include ../partials/flashAlert %>
     <!-- CARDS START -->
     <div id="card_wrapper" class="container">
       <div class="row">
@@ -62,7 +50,9 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title"> <%= debt.title %> </h5>
-                <h6 class="card-subtitle mb-2 text-muted"> <%= debt.startDate %> </h6>
+                <h6 class="card-subtitle mb-2 text-muted">
+                  <%= moment(debt.startDate).format("MMM Do, YYYY") %>
+                </h6>
                 <p class="card-text"> Capital: <%= debt.capital %> </p>
                 <p class="card-text"> Rate: <%= debt.rate %> % </p>
                 <a href="/debts/<%= debt._id %>" class="btn btn-primary"> See Details </a>

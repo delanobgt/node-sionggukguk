@@ -2,26 +2,27 @@
 
 let express = require("express");
 let router = express.Router();
-
-let debtModel = require("../models/debt");
+let moment = require("moment");
+let db = require("../models");
+let authMW = require("../middlewares/authentication");
 
 // INDEX route
-router.get("/debts", function(req, res) {
-    debtModel.find(
+router.get("/", authMW.isLoggedIn, function(req, res) {
+    db.debt.find(
         {}
     ).then(debts => {
-        res.render("debts/index", {debts: debts});
+        res.render("debts/index", {debts: debts, moment: moment});
     });
 });
 
 // NEW DEBT route
-router.get("/debts/new", function(req, res) {
+router.get("/new", authMW.isLoggedIn, function(req, res) {
     res.render("debts/new");
 });
 
 // CREATE DEBT route (to database)
-router.post("/debts", function(req, res) {
-    debtModel.create({
+router.post("/", authMW.isLoggedIn, function(req, res) {
+    db.debt.create({
         title: req.body.title,
         startDate: new Date(req.body.startDate),
         capital: req.body.capital,
@@ -39,31 +40,35 @@ router.post("/debts", function(req, res) {
         }
         return debt.save();
     }).then(debt => {
+        req.flash("success", "New Debt created!");
         res.redirect("/debts");
+    }).catch(err => {
+        req.flash("error", "Failed to create New Debt.");
+        res.redirect("/debts/new");
     });
 });
 
 // SHOW route
-router.get("/debts/:id", function(req, res) {
-    debtModel.findById(
+router.get("/:id", authMW.isLoggedIn, function(req, res) {
+    db.debt.findById(
         req.params.id
     ).then(debt => {
-        res.render("debts/show", {debt: debt});
+        res.render("debts/show", {debt: debt, moment: moment});
     });
 });
 
 // EDIT route
-router.get("/debts/:id/edit", function(req, res) {
-    debtModel.findById(
+router.get("/:id/edit", authMW.isLoggedIn, function(req, res) {
+    db.debt.findById(
         req.params.id
     ).then(debt => {
-        res.render("debts/edit", {debt: debt});
+        res.render("debts/edit", {debt: debt, moment: moment});
     });
 });
 
 // UPDATE route
-router.put("/debts/:id", function(req, res) {
-    debtModel.findByIdAndUpdate(
+router.put("/:id", authMW.isLoggedIn, function(req, res) {
+    db.debt.findByIdAndUpdate(
         req.params.id,
         { $set: {
                 title: req.body.title,
@@ -90,16 +95,24 @@ router.put("/debts/:id", function(req, res) {
         }
         return debt.save();
     }).then(debt => {
+        req.flash("success", "Debt updated!");
         res.redirect(`/debts/${debt._id}`);
-    })
+    }).catch (err => {
+        req.flash("error", "Failed to update Debt.");
+        res.redirect(`back`);
+    });
 });
 
 // DELETE route
-router.delete("/debts/:id", function(req, res) {
-    debtModel.findByIdAndRemove(
+router.delete("/:id", authMW.isLoggedIn, function(req, res) {
+    db.debt.findByIdAndRemove(
         req.params.id
     ).then(() => {
+        req.flash("success", "Debt deleted!");
         res.redirect("/debts");
+    }).catch(err => {
+        req.flash("error", "Failed to delete Debt.");
+        res.redirect("back");
     });
 });
 

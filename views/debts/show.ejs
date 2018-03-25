@@ -11,14 +11,18 @@
 	</head>
 
 	<body>
+    <% include ../partials/flashAlert %>
     <div class="container">
       <div class="row">
         <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
         <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
           <div class="card">
             <div class="card-body">
+              <a href="/debts" class="btn btn-secondary" style="width: 5em;">&lt; Back</a><br><br>
               <h2 class="card-title"><%= debt.title %></h2>
-              <h6 class="card-subtitle mb-2 text-muted"><%= debt.startDate %></h6>
+              <h6 class="card-subtitle mb-2 text-muted">
+                <%= moment(debt.startDate).format("MMM Do, YYYY") %>
+              </h6>
               <table>
                 <tr>
                   <td><p class="card-text">Capital</p></td>
@@ -31,7 +35,7 @@
                   <td><p class="card-text value"><%= debt.rate %></p></td>
                 </tr>
               </table>
-              <% if (debt.extras) { %>
+              <% if (debt.extras.length) { %>
                 <hr>
                 <h4>EXTRA COST</h4>
                 <table id="extraTable">
@@ -47,6 +51,7 @@
                   <% } %>
                 </table>
               <% } %>
+              <br>
               <div class="text-right">
                 <a href="/debts/<%= debt._id %>/edit" class="btn btn-primary" style="width: 5em;">Edit</a>
                 <form action="/debts/<%= debt._id %>?_method=DELETE" method="POST">

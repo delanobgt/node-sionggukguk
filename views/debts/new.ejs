@@ -12,7 +12,7 @@
 	</head>
 
 	<body>
-    
+    <% include ../partials/flashAlert %>
     <div class="container">
       <h1>Create New Debt</h1>
       <div class="row">
@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
               <label for="capital">Capital (Modal)</label>
-              <input type="number" value="" class="form-control" id="capital" name="capital" placeholder="Capital (ex. 100,000)" required>
+              <input type="text" value="" class="form-control" id="capital" name="capital" placeholder="Capital (ex. 100,000)" required>
             </div>
             <div class="form-group">
               <label for="rate">Rate (Bunga)</label>
@@ -50,6 +50,7 @@
       </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
     <script type="text/javascript" src="/scripts/debts/new.js"></script>
 
 <% include ../partials/debtsFooter %>
