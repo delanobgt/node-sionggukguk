@@ -11,11 +11,16 @@
     
     <style>
       #strukDOM {
-        background: lightgray;
+        border: 5px solid lightgray;
+        background: white;
         font-size: 14px;
         font-family: monospace;
-        padding: 5px;
-        transform: rotate(-90deg) translate(-60px, 0px);
+        padding: 10px;
+        margin: 20px 40px;
+        /* transform: rotate(-90deg) translate(-60px, 0px); */
+      }
+      #widthSlider {
+        width: 200px;
       }
     </style>
 	</head>
@@ -23,20 +28,22 @@
 	<body>
     <br>
     <div class="container">
-      <div class="row">
-        <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
-        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
-          <div class="form-group">
-            <label for="target_date">Per tanggal</label>
-            <input type="date" class="form-control" value="<%=moment().format("YYYY-MM-DD")%>" id="target_date" name="targetDate" placeholder="yyyy/mm/dd" required>
-          </div>
-          <div id="strukDOM"></div>
-        </div>
-        <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
+      <div class="form-group">
+        <label for="target_date">Per tanggal</label>
+        <input type="date" class="form-control" value="<%=moment().format("YYYY-MM-DD")%>" id="target_date" name="targetDate" placeholder="yyyy/mm/dd" required>
       </div>
+    </div>
+    <div id="strukDOM"></div>
+    <br>
+    <div class="container">
+      Receipt Width: &nbsp;&nbsp;<input type="range" min="1" max="500" value="50" id="widthSlider">
+      <br><br>
+      <a id="downloadLink" class="btn btn-primary">Download</a>
+      <br><br>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+    <script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
       function giveComma(numberStr) {
         let noComma = (numberStr+'').replace(/[,\.]/g, "");
@@ -58,6 +65,7 @@
         debt.extras.push({description: "<%=extra.description%>", cost: <%=extra.cost%>});
       <% } %>
 
+      let strukDOM = document.getElementById("strukDOM");
       function reloadStrukDOM(targetDate) {
         let newHTML =
           `
@@ -105,16 +113,47 @@
         newHTML += `Total hutang per tanggal ${target.format("D MMMM YYYY")}`;
         newHTML += `<span style="float: right;">${giveComma(totalDebt)}</span><br>`;
 
-        document.getElementById("strukDOM").innerHTML = newHTML;
+        strukDOM.innerHTML = newHTML;
       }
-      reloadStrukDOM(new Date());
 
-      (function targetDateOnChangeHandler() {
-        let targetDate = document.getElementById('target_date');
-        targetDate.onchange = () => {
-          reloadStrukDOM(new Date(targetDate.value));
-        };
-      })();
+      //HTML2canvas stuff
+      let canvasRef = document.createElement('canvas');
+      function redrawCanvas() {
+        let border = strukDOM.style.border;
+        strukDOM.style.border = "none";
+        html2canvas(document.querySelector("#strukDOM")).then(canvas => {
+          strukDOM.style.border = border;
+          canvasRef = canvas;
+          rebindDownloadLink();
+        }); 
+      }
+
+      //rebind download link
+      let downloadLink = document.getElementById('downloadLink');
+      function rebindDownloadLink() {
+        downloadLink.setAttribute('download', moment(targetDate.value).format('DD-MM-YYYY')+'.png');
+        downloadLink.setAttribute('href', canvasRef.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+      }
+
+      const canvasWidth = 450;
+      widthSlider = document.getElementById('widthSlider');
+      strukDOM.setAttribute("style", `display: block; width:${canvasWidth}px;`);
+      document.getElementById('widthSlider').oninput = () => {
+        console.log(canvasWidth+widthSlider.value);
+        strukDOM.setAttribute("style", `display: block; width:${canvasWidth+(+widthSlider.value)}px;`);
+        reloadStrukDOM(new Date(targetDate.value));
+        redrawCanvas();
+      };
+
+      //dateOnChange listener
+      let targetDate = document.getElementById('target_date');
+      targetDate.onchange = () => {
+        reloadStrukDOM(new Date(targetDate.value));
+        redrawCanvas();
+      };
+
+      reloadStrukDOM(new Date(targetDate.value));
+      redrawCanvas();
     </script>
 
 <% include ../partials/debtsFooter %>
