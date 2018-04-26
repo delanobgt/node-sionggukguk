@@ -25,7 +25,7 @@ router.post("/", authMW.isLoggedIn, function(req, res) {
     db.debt.create({
         title: req.body.title,
         startDate: new Date(req.body.startDate),
-        capital: req.body.capital,
+        capital: req.body.capital.replace(/[,\.]/g, ""),
         rate: req.body.rate
     }).then(debt => {
         if (req.body.descriptions && req.body.costs) {
@@ -34,7 +34,7 @@ router.post("/", authMW.isLoggedIn, function(req, res) {
             for (let i in descriptions) {
                 debt.extras.push({
                     description: descriptions[i],
-                    cost: costs[i]
+                    cost: Number(costs[i].replace(/[,\.]/g, ""))
                 });
             }
         }
@@ -53,7 +53,7 @@ router.get("/:id", authMW.isLoggedIn, function(req, res) {
     db.debt.findById(
         req.params.id
     ).then(debt => {
-        res.render("debts/show", {debt: debt, moment: moment});
+        res.render("debts/show", {debt: debt, moment: moment, giveComma: giveComma});
     });
 });
 
@@ -62,7 +62,16 @@ router.get("/:id/edit", authMW.isLoggedIn, function(req, res) {
     db.debt.findById(
         req.params.id
     ).then(debt => {
-        res.render("debts/edit", {debt: debt, moment: moment});
+        res.render("debts/edit", {debt: debt, moment: moment, giveComma: giveComma});
+    });
+});
+
+// PRINT route
+router.get("/:id/print", authMW.isLoggedIn, function(req, res) {
+    db.debt.findById(
+        req.params.id
+    ).then(debt => {
+        res.render("debts/print", {debt: debt, moment: moment, giveComma: giveComma});
     });
 });
 
@@ -73,7 +82,7 @@ router.put("/:id", authMW.isLoggedIn, function(req, res) {
         { $set: {
                 title: req.body.title,
                 startDate: new Date(req.body.startDate),
-                capital: req.body.capital,
+                capital: req.body.capital.replace(/[,\.]/g, ""),
                 rate: req.body.rate
             }
         },
@@ -89,7 +98,7 @@ router.put("/:id", authMW.isLoggedIn, function(req, res) {
             for (let i in descriptions) {
                 debt.extras.push({
                     description: descriptions[i],
-                    cost: costs[i]
+                    cost: Number(costs[i].replace(/[,\.]/g, ""))
                 });
             }
         }
@@ -117,3 +126,12 @@ router.delete("/:id", authMW.isLoggedIn, function(req, res) {
 });
 
 module.exports = router;
+
+function giveComma(numberStr) {
+	let noComma = (numberStr+'').replace(/[,\.]/g, "");
+	let withComma = Number(noComma).toLocaleString('en', {
+		maximumSignificantDigits : 21,
+		maximumFractionDigits: 20
+	});
+	return withComma;
+}

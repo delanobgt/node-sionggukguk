@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
               <label for="capital">Capital (Modal)</label>
-              <input type="text" class="form-control" id="capital" name="capital" placeholder="Capital (ex. 100,000)" value="<%= debt.capital %>" required>
+              <input type="text" class="form-control" id="capital" name="capital" placeholder="Capital (ex. 100,000)" value="<%= giveComma(debt.capital) %>" required>
             </div>
             <div class="form-group">
               <label for="rate">Rate (Bunga)</label>
@@ -48,7 +48,7 @@
                   </div>
                   <div id="cost<%= cnt %>" class="extras_column form-group">
                     <label class="extras_label">Cost</label>
-                    <input type="number" class="extras_number" name="costs[<%= cnt %>]" placeholder="Cost (ex. 100,000)" value="<%= extra.description %>" required>  
+                    <input id="cost_value<%= cnt %>" type="text" class="extras_number" name="costs[<%= cnt %>]" placeholder="Cost (ex. 100,000)" value="<%= giveComma(extra.cost) %>" required>
                   </div>
                   <button type="button" id="delete<%= cnt %>" onclick="deleteExtraNodesAt(<%= cnt %>);" class="btn btn-danger">X</button>
                   <% cnt++ %>
@@ -71,5 +71,20 @@
     <script type="text/javascript" src="/scripts/debts/new.js"></script>
     <script type="text/javascript">
       extrasCount = <%= cnt %>;
+      function giveComma(numberStr) {
+        let noComma = numberStr.replace(/[,\.]/g, "");
+        let withComma = Number(noComma).toLocaleString('en', {
+          maximumSignificantDigits : 21,
+          maximumFractionDigits: 20
+        });
+        return withComma;
+      }
+      for (let i = 0; i < extrasCount; i++) {
+        $("#cost_value"+i).on('input',function(e){
+          let unformattedStr = $(this).val();
+          let formattedStr = giveComma(unformattedStr);
+          $(this).val(formattedStr);
+        });
+      }
     </script>
 <% include ../partials/debtsFooter %>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/debts/show.css">
+    <title>SiongGukGuk's Debts</title>
+    
+    <style>
+      #strukDOM {
+        background: lightgray;
+        font-size: 14px;
+        font-family: monospace;
+        padding: 5px;
+        transform: rotate(-90deg) translate(-60px, 0px);
+      }
+    </style>
+	</head>
+
+	<body>
+    <br>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
+        <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
+          <div class="form-group">
+            <label for="target_date">Per tanggal</label>
+            <input type="date" class="form-control" value="<%=moment().format("YYYY-MM-DD")%>" id="target_date" name="targetDate" placeholder="yyyy/mm/dd" required>
+          </div>
+          <div id="strukDOM"></div>
+        </div>
+        <div class="col-lg-3 col-md-2 col-sm-0 col-xs-0"></div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+    <script>
+      function giveComma(numberStr) {
+        let noComma = (numberStr+'').replace(/[,\.]/g, "");
+        let withComma = Number(noComma).toLocaleString('en', {
+          maximumSignificantDigits : 21,
+          maximumFractionDigits: 20
+        });
+        return withComma;
+      }
+
+      let debt = {
+        title: "<%=debt.title%>",
+        startDate: new Date("<%=moment(debt.startDate).format('YYYY-MM-DD')%>"),
+        capital: <%=debt.capital%>,
+        rate: <%=debt.rate%>,
+        extras: []
+      };
+      <% for (let extra of debt.extras) { %>
+        debt.extras.push({description: "<%=extra.description%>", cost: <%=extra.cost%>});
+      <% } %>
+
+      function reloadStrukDOM(targetDate) {
+        let newHTML =
+          `
+            PERHITUNGAN HUTANG DENGAN MARULI TANARY MULAI TANGGAL ${moment(debt.startDate).format("D MMMM YYYY")}<br>
+            BUNGA ${debt.rate}% PER BULAN (IDR)<br>
+            <br>
+            HUTANG PER TANGGAL ${moment(debt.startDate).format("D MMMM YYYY")} 
+            <span style="float: right">${giveComma(debt.capital)}</span><br>
+
+            BUNGA DARI ${giveComma(debt.capital)} = ${giveComma(Math.floor(debt.capital*(debt.rate/100)*12/365))}<br>
+          `;
+
+        let ratePerDay = Math.floor(debt.capital*(debt.rate/100)*12/365);
+        let target = moment(targetDate).endOf('day');
+        let currentDate = moment(debt.startDate);
+        let totalDebt = debt.capital;
+        while(currentDate.isSameOrBefore(target)) {
+          let endDate = moment(currentDate).endOf('month');
+          if (endDate.isAfter(target)) endDate = moment(target)
+
+          let diffDay = endDate.diff(currentDate, 'days') + 1;
+
+          newHTML += 
+            `
+              ${currentDate.format("DD MMM")} s/d ${endDate.format("DD MMM YYYY")}
+              = ${diffDay} hari
+              <span style="float: right;">${giveComma(diffDay*ratePerDay)}</span>
+              <br>
+            `;
+
+          currentDate = moment(endDate);
+          currentDate.add(1, 'days');
+          totalDebt += diffDay*ratePerDay
+        }
+
+        newHTML += `<span style="float: right;">---------------</span><br>`;
+        newHTML += `<span style="float: right;">${giveComma(totalDebt)}</span><br>`;
+
+        for (let extra of debt.extras) {
+          newHTML += `${extra.description} <span style="float: right;">${giveComma(extra.cost)}</span><br>`;
+          totalDebt += extra.cost;
+        }
+        newHTML += `<span style="float: right;">---------------</span><br>`;
+
+        newHTML += `Total hutang per tanggal ${target.format("D MMMM YYYY")}`;
+        newHTML += `<span style="float: right;">${giveComma(totalDebt)}</span><br>`;
+
+        document.getElementById("strukDOM").innerHTML = newHTML;
+      }
+      reloadStrukDOM(new Date());
+
+      (function targetDateOnChangeHandler() {
+        let targetDate = document.getElementById('target_date');
+        targetDate.onchange = () => {
+          reloadStrukDOM(new Date(targetDate.value));
+        };
+      })();
+    </script>
+
+<% include ../partials/debtsFooter %>

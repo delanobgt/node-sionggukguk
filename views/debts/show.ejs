@@ -27,7 +27,7 @@
                 <tr>
                   <td><p class="card-text">Capital</p></td>
                   <td><p class="card-text colon">:</p></td>
-                  <td><p class="card-text value"><%= debt.capital %></p></td>
+                  <td><p class="card-text value"><%= giveComma(debt.capital) %></p></td>
                 </tr>
                 <tr>
                   <td><p class="card-text">Rate</p></td>
@@ -46,13 +46,14 @@
                   <% for (let extra of debt.extras) { %>
                     <tr>
                       <td><p class="extra-table-text"><%= extra.description %></p></td>
-                      <td><p class="extra-table-text"><%= extra.cost %></p></td>
+                      <td><p class="extra-table-text"><%= giveComma(extra.cost) %></p></td>
                     </tr>
                   <% } %>
                 </table>
               <% } %>
               <br>
               <div class="text-right">
+                <a href="/debts/<%= debt._id %>/print" class="btn btn-warning" style="width: 5em;"> Print </a>
                 <a href="/debts/<%= debt._id %>/edit" class="btn btn-primary" style="width: 5em;">Edit</a>
                 <form action="/debts/<%= debt._id %>?_method=DELETE" method="POST">
                   <button class="btn btn-danger" style="width: 5em;">Delete</button>

@@ -28,7 +28,6 @@ app.use(flash());
 //broadcast flash message to all routes
 app.use(function(req, res, next) {
     res.locals.success = req.flash("success");
-    console.log(res.locals.success);
     res.locals.error = req.flash("error");
     next();
 });
